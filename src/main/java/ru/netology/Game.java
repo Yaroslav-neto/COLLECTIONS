@@ -2,16 +2,17 @@ package ru.netology;
 
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+
+import java.util.Map;
 
 @Getter
 public class Game {
 
-    protected List<Player> registeredPlayers;
+    protected Map<String, Player> registeredPlayers;
 
     public Game() {
-        this.registeredPlayers = new ArrayList<>();
+        this.registeredPlayers = new HashMap<>();
     }
 
     // Добавление в список зарегистрированных игроков
@@ -19,10 +20,10 @@ public class Game {
         if (player == null) {
             throw new NotRegisteredException("Игрок c именем null не может быть зарегистрирован.");
         }
-        if (registeredPlayers.contains(player)) {
-            throw new NotRegisteredException("Такой игрок уже зарегистрирован.");
+        if (registeredPlayers.containsKey(player.getName())) {
+            throw new NotRegisteredException("Игрок с именем " + player.getName() + " уже зарегистрирован.");
         }
-        registeredPlayers.add(player);
+        registeredPlayers.put(player.getName(), player);
     }
 
     // Поиск по имени
@@ -30,11 +31,7 @@ public class Game {
         if (name == null) {
             throw new NotRegisteredException("null не допустимое имя.");
         }
-        for (Player player : registeredPlayers)
-            if (player.getName().equals(name)) {
-                return player;
-            }
-        return null;
+        return registeredPlayers.get(name);
     }
 
     //бойня

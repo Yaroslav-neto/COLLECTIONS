@@ -2,8 +2,8 @@ package ru.netology;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,7 +13,6 @@ class GameTest {
     Player player3 = new Player(3, "Sasha", 9);
     Player player4 = new Player(4, "Ilya", 10);
     Player player5 = new Player(5, "Sergei", 10);
-    Player playerNull = null;
 
     @Test
     void addPlayer() {
@@ -25,10 +24,14 @@ class GameTest {
         game.addPlayer(player4);
         game.addPlayer(player5);
 
-        List<Player> expected = Arrays.asList(player1, player2, player3, player4, player5);
-        List<Player> actual = game.getRegisteredPlayers();
+        Map<String, Player> expected = new HashMap<>();
+        expected.put("Petya", player1);
+        expected.put("Vanya", player2);
+        expected.put("Sasha", player3);
+        expected.put("Ilya", player4);
+        expected.put("Sergei", player5);
 
-        assertEquals(expected, actual);
+        assertEquals(expected, game.registeredPlayers);
     }
 
     @Test
@@ -141,6 +144,46 @@ class GameTest {
         assertNotEquals(player1.hashCode(), player2.hashCode());
         assertEquals(player1.hashCode(), player1.hashCode());
 
+    }
+
+    @Test
+    public void testEquals_SameObject() {
+        Player player = new Player(1, "Player1", 100);
+        assertEquals(player, player);
+    }
+
+    @Test
+    public void testEquals_EqualObjects() {
+        Player player1 = new Player(1, "Player1", 100);
+        Player player2 = new Player(1, "Player1", 100);
+        assertEquals(player1, player2);
+    }
+
+    @Test
+    public void testEquals_DifferentId() {
+        Player player1 = new Player(1, "Player1", 100);
+        Player player2 = new Player(2, "Player1", 100);
+        assertNotEquals(player1, player2);
+    }
+
+    @Test
+    public void testEquals_DifferentName() {
+        Player player1 = new Player(1, "Player1", 100);
+        Player player2 = new Player(1, "Player2", 100);
+        assertNotEquals(player1, player2);
+    }
+
+    @Test
+    public void testEquals_DifferentStrength() {
+        Player player1 = new Player(1, "Player1", 100);
+        Player player2 = new Player(1, "Player1", 120);
+        assertNotEquals(player1, player2);
+    }
+
+    @Test
+    public void testEquals_NullObject() {
+        Player player = new Player(1, "Player1", 100);
+        assertNotEquals(null, player);
     }
 }
 
